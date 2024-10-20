@@ -1,0 +1,23 @@
+.notif-container {
+    display: flex;
+    flex-direction: column; /* Stack notifications vertically */
+    width: 70%; /* Adjust width as needed */
+    margin: 10% auto; /* Center the container horizontally */
+  }
+  
+  .notif-container > div {
+    /* Styles already applied in your JSX, kept for clarity */
+    background-color: rgb(126, 146, 177);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notif-container > div:hover {
+    background-color: #b5b3c3; /* Subtle background change on hover */
+    cursor: pointer; /* Indicate that the notification is clickable */
+  }
+
+  

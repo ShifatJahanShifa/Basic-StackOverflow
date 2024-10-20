@@ -1,0 +1,35 @@
+.detail-container {
+    max-width: 800px;
+    margin: 10% auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .detail-box {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+  }
+  
+  .detail-box p {
+    margin-bottom: 10px;
+  }
+  
+  .detail-box p span {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .code-block {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .code-block code {
+    font-family: monospace;
+    font-size: 14px;
+  }
