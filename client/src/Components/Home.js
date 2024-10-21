@@ -55,7 +55,7 @@ return (
     <div className="container">
         {posts.map(post => (
             <div key={post._id} className="post">
-                {/* <h3>{post.email}</h3> */}
+                <h3>{post.email}</h3>
                 <p>{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true})}</p>
                 <p className="text">{post.text}</p>
                 {post.fileContent && (

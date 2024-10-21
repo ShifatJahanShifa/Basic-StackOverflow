@@ -36,6 +36,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                         </Button>
                         <Button variant="contained" style={button} color="info" component={Link} to="/notification">
                             Notification
+                            {/* <i class="fa-solid fa-bell"></i> */}
                         </Button>
 
                         <Logout setIsLoggedIn={setIsLoggedIn} />

@@ -50,6 +50,7 @@ const getPosts= async(req,res)=>{
 
             return {
                 ...postt.toObject(),
+                email: postt.userId.email,
                 fileContent: fileContent, // Add the content of the file to the post
             };
         }));
