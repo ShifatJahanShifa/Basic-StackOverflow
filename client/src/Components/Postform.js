@@ -17,7 +17,17 @@ const PostForm = () => {
         formData.append('text', text);
 
         // If the user provides a code snippet and selects an extension
-        if (codeSnippet && fileExtension) {
+        if(codeSnippet && file) 
+        {
+            alert('select only one method: file upload or code snippet upload with extension')
+            return
+        }
+        if (codeSnippet) {
+            if (!fileExtension) {
+                alert('Please select a file extension for the code snippet.');
+                return;
+            }
+    
             const blob = new Blob([codeSnippet], { type: 'text/plain' });
             const newFile = new File([blob], `snippet${fileExtension}`, { type: 'text/plain' });
             formData.append('codeSnippet', newFile);
@@ -97,7 +107,7 @@ const PostForm = () => {
                 <input
                     type="file"
                     onChange={(e) => setFile(e.target.files[0])}  
-                    accept=".js,.txt,.py,.html,.css"  
+                    accept=".js,.txt,.py,.html,.css,.c,.cpp,.java"  
                     className="form-control"
                 />
             </div>

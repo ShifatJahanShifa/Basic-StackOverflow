@@ -1,57 +1,9 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useParams } from "react-router-dom";
-
-// const NotificationDetail = () => {
-//     const { notificationId } = useParams(); // Get the notification ID from the URL
-//     const [notification, setNotification] = useState(null);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchNotification = async () => {
-//             try {
-//                 const response = await axios.get(`http://localhost:3001/notification/${notificationId}`, {
-//                     withCredentials: true // Ensure cookies are included if you're using sessions
-//                 });
-//                 setNotification(response.data);
-//             } catch (error) {
-//                 console.error('Error fetching notification details:', error);
-//                 alert('Error fetching notification details');
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchNotification();
-//     }, [notificationId]);
-
-//     if (loading) {
-//         return <center><h1>Loading...</h1></center>;
-//     }
-
-//     if (!notification) {
-//         return <center><h1>Notification not found</h1></center>;
-//     }
-
-//     return (
-//         <div>
-//             <h2>Notification Details</h2>
-//             <p>User ID: {notification.userId}</p>
-//             <p>Text: {notification.text}</p>
-//             <p>User Email: {notification.userEmail}</p>
-//             {/* Add any other details you want to display */}
-//             <p></p>
-//         </div>
-//     );
-// };
-
-// export default NotificationDetail;
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import './notifdetail.css'
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const NotificationDetail = () => {
     const { notificationId } = useParams(); // Get the notification ID from the URL
@@ -102,7 +54,12 @@ const NotificationDetail = () => {
                 {/* <p><span>Post Text:</span> {details.post.text}</p> */}
                 {details.post.fileContent && (
                     <pre className="code-block">
-                        <code className="code">{details.post.fileContent}</code> 
+                        {/* <code className="code">{details.post.fileContent}</code>  */}
+                        <SyntaxHighlighter language="javascript" style={docco} >
+                        {typeof details.post.fileContent === 'object' 
+                ? JSON.stringify(details.post.fileContent, null, 2) // Convert object to string
+                : String(details.post.fileContent)} {/* Display code content */}
+                    </SyntaxHighlighter>
                     </pre>
                 )}
                 {/* <p><span>Post Created By:</span> {details.post.userId.email}</p>  */}

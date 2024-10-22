@@ -5,27 +5,29 @@ const mongoose = require("mongoose")
 const MongoStore = require("connect-mongo")
 const Minio=require('minio')
 const axios = require('axios')
+const minioClient=require('../config/minioConfig').default
+const { streamToString }=require('../helper/helper')
 
-const minioClient = new Minio.Client({
-    endPoint: 'localhost',
-    port: 9000,
-    useSSL: false,
-    accessKey: 'admin',
-    secretKey: 'password'
-});
+// const minioClient = new Minio.Client({
+//     endPoint: 'localhost',
+//     port: 9000,
+//     useSSL: false,
+//     accessKey: 'admin',
+//     secretKey: 'password'
+// });
 
-const streamToString = (stream) => {
-    return new Promise((resolve, reject) => {
-        const chunks = [];
-        stream.on('data', (chunk) => {
-            chunks.push(chunk);
-        });
-        stream.on('end', () => {
-            resolve(Buffer.concat(chunks).toString('utf8'));
-        });
-        stream.on('error', reject);
-    });
-};
+// const streamToString = (stream) => {
+//     return new Promise((resolve, reject) => {
+//         const chunks = [];
+//         stream.on('data', (chunk) => {
+//             chunks.push(chunk);
+//         });
+//         stream.on('end', () => {
+//             resolve(Buffer.concat(chunks).toString('utf8'));
+//         });
+//         stream.on('error', reject);
+//     });
+// };
 
 const getPosts= async(req,res)=>{
     try {

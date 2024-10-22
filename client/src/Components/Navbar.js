@@ -68,7 +68,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                         <Button variant="contained" style={button} color="info" component={Link} to="/notification">
                            
                         <FontAwesomeIcon icon={faBell} /> {/* Use FontAwesomeIcon for the bell icon */}
-                        {notification.length > 0 && (
+                        {notification.length >= 0 && (
                             <span style={{ 
                                 marginLeft: '8px', 
                                 backgroundColor: 'red', 

@@ -65,14 +65,10 @@ return (
                 <p className="text">{post.text}</p>
                 {post.fileContent && (
                     <pre className="code-block">
-                        {/* let str= */}
-                        {/* <SyntaxHighlighter language="javascript" style={docco}>
-                        <code className="code">{post.fileContent}</code> {/* Display code content */}
-                        {/* </SyntaxHighlighter> */} 
                         <SyntaxHighlighter language="javascript" style={docco} >
                         {typeof post.fileContent === 'object' 
-                ? JSON.stringify(post.fileContent, null, 2) // Convert object to string
-                : post.fileContent} {/* Display code content */}
+                        ? JSON.stringify(post.fileContent, null, 2) // Convert object to string
+                        : String(post.fileContent)} {/* Display code content */}
                     </SyntaxHighlighter>
                     </pre>
                 )}
@@ -80,28 +76,6 @@ return (
         ))}
     </div>
     );
-
-
-    // return (
-    //     <div>
-    //         <h2>Recent Posts</h2>
-    //         <div>
-    //             {posts.length > 0 ? (
-    //                 posts.map(post => (
-    //                     <div key={post._id}>
-    //                         <p>{post.text}</p>
-    //                         {post.snippetUrl && (
-    //                             <a href={post.snippetUrl} target="_blank" rel="noopener noreferrer">Download Code Snippet</a>
-    //                         )}
-    //                     </div>
-    //                 ))
-    //             ) : (
-    //                 <p>No posts available</p>
-    //             )}
-    //         </div>
-    //     </div>
-        
-    // );
 }
 
 export default Home;
