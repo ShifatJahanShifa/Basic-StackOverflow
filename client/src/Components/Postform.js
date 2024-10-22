@@ -51,50 +51,6 @@ const PostForm = () => {
     };
 
     return (
-        // <form onSubmit={handleSubmit}>
-        //     <div>
-        //         <label>Text:</label>
-        //         <textarea
-        //             value={text}
-        //             onChange={(e) => setText(e.target.value)}  // Update text input
-        //             placeholder="Enter your post text here..."
-        //             required
-        //             style={{ width: '100%', height: '100px' }}
-        //         />
-        //     </div>
-        //     <div>
-        //         <label>Code Snippet:</label>
-        //         <textarea
-        //             value={codeSnippet}
-        //             onChange={(e) => setCodeSnippet(e.target.value)}  // Update code snippet input
-        //             placeholder="Enter your code snippet here..."
-        //             style={{ width: '100%', height: '100px' }}
-        //         />
-        //     </div>
-        //     <div>
-        //         <label>Select File Extension:</label>
-        //         <select
-        //             value={fileExtension}
-        //             onChange={(e) => setFileExtension(e.target.value)} // Update file extension
-        //         >
-        //             <option value="">Select Extension</option>
-        //             <option value=".js">.js</option>
-        //             <option value=".txt">.txt</option>
-        //             <option value=".py">.py</option>
-        //             <option value=".html">.html</option>
-        //             <option value=".css">.css</option>
-        //         </select>
-        //     </div>
-        //     <div>
-        //         <label>Upload Code Snippet:</label>
-        //         <input
-        //             type="file"
-        //             onChange={(e) => setFile(e.target.files[0])}  // Update file input when file is selected
-        //             accept=".js,.txt,.py,.html,.css"  // Accept common code file formats
-        //         />
-        //     </div>
-        //     <button type="submit">Submit Post</button>
-        // </form> 
         <div className="post-form-container">
         <form onSubmit={handleSubmit} className="post-form">
             <div className="form-group">

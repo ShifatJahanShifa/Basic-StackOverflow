@@ -3,6 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './home.css';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 function Home() {
     const location = useLocation();
@@ -60,7 +65,15 @@ return (
                 <p className="text">{post.text}</p>
                 {post.fileContent && (
                     <pre className="code-block">
+                        {/* let str= */}
+                        {/* <SyntaxHighlighter language="javascript" style={docco}>
                         <code className="code">{post.fileContent}</code> {/* Display code content */}
+                        {/* </SyntaxHighlighter> */} 
+                        <SyntaxHighlighter language="javascript" style={docco} >
+                        {typeof post.fileContent === 'object' 
+                ? JSON.stringify(post.fileContent, null, 2) // Convert object to string
+                : post.fileContent} {/* Display code content */}
+                    </SyntaxHighlighter>
                     </pre>
                 )}
             </div>

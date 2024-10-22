@@ -49,18 +49,6 @@ const getNotifications=async (req, res) => {
     // res.json(notifications);
 }
 
-// const streamToString = (stream) => {
-//     return new Promise((resolve, reject) => {
-//         const chunks = [];
-//         stream.on('data', (chunk) => {
-//             chunks.push(chunk);
-//         });
-//         stream.on('end', () => {
-//             resolve(Buffer.concat(chunks).toString('utf8'));
-//         });
-//         stream.on('error', reject);
-//     });
-// };
 
 const getSingleNotification=async (req, res) => {
     const { id } = req.params;
@@ -103,8 +91,35 @@ const getSingleNotification=async (req, res) => {
 }
 
 
+const getNotificationsCount= async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ error: 'User not authenticated' });
+    }
+    
+    const userId = req.session.user.id; // Assuming session or token-based authentication
+
+    // notification.countDocuments({ userId: userId, viewed: false }, (err, count) => {
+    //     if (err) {
+    //         return res.status(500).json({ error: 'Error fetching notification count' });
+    //     }
+    //     res.json({ count });
+    // });
+    try{
+        const notifications = await notification.find({
+            userId: req.session.user.id,
+            view: false
+        }).populate('postId');
+        console.log(notifications.length);
+        res.json({ count: notifications.length });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+} 
+
 module.exports = {
     createNotification,
     getNotifications,
-    getSingleNotification
+    getSingleNotification,
+    // getNotificationsCount
 }

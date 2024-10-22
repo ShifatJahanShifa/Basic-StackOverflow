@@ -5,6 +5,7 @@ const { createNotification, getNotifications, getSingleNotification } = require(
 router.post('/notification', createNotification);
 router.get('/notification',getNotifications)
 router.get('/notification/:id',getSingleNotification)
+// router.get('/notification/count',getNotificationsCount)
 
 
 module.exports = router;
