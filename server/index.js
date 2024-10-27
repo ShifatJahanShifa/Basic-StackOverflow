@@ -17,35 +17,40 @@ const route=require('./routes/route')
 
 dotenv.config();
 const app = express();
+
+// middleware
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000', // Replace with your frontend's URL
     credentials: true
 }));
 
-
+// db connection
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
+    .then(() => 
+        {
+            app.listen(process.env.PORT, () => {
+                console.log(`Server is running on port ${process.env.PORT}`);
+            });
+            
+            console.log('Connected to MongoDB')
+        })
     .catch(err => console.error('Failed to connect to MongoDB', err));
    
 // MinIO setup
-const minioClient = new Minio.Client({
-    endPoint: 'localhost',
-    port: 9000,
-    useSSL: false,
-    accessKey: 'admin',
-    secretKey: 'password'
-});
+// const minioClient = new Minio.Client({
+//     endPoint: 'localhost',
+//     port: 9000,
+//     useSSL: false,
+//     accessKey: 'admin',
+//     secretKey: 'password'
+// });
 
-    
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
-});
-    
+// session setup
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
+    resave: false,     // no update
+    saveUninitialized: true,    // store when created
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI
     }),
@@ -77,11 +82,9 @@ app.post("/login", async (req, res) => {
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
                 req.session.user = { id: user._id, email: user.email };
-                // console.log(email);
-                // console.log(user.name);
                 res.json("Success");
             } else {
-                res.status(401).json("Password doesn't match");
+                res.status(401).json("Password doesn't match. Unauthorized user");
             }
         } else {
             res.status(404).json("No Records found");
@@ -104,12 +107,6 @@ app.post("/logout", (req, res) => {
     } else {
         res.status(400).json({ error: "No session found" });
     }
-    // req.session.destroy((err) => {
-    //     if (err) {
-    //         return res.status(500).json({ error: 'Failed to logout' });
-    //     }
-    //     res.status(200).json({ message: 'Logged out successfully' });
-    // });
 });
 
 app.get('/user', (req, res) => {

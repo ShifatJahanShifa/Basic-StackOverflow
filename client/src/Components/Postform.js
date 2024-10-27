@@ -3,10 +3,10 @@ import axios from 'axios';
 import './post.css';
 
 const PostForm = () => {
-    const [text, setText] = useState('');  // State for text input
-    const [file, setFile] = useState(null); // State for file input
-    const [codeSnippet, setCodeSnippet] = useState(''); // State for code snippet input
-    const [fileExtension, setFileExtension] = useState(''); // State for file extension
+    const [text, setText] = useState('');  
+    const [file, setFile] = useState(null); 
+    const [codeSnippet, setCodeSnippet] = useState(''); 
+    const [fileExtension, setFileExtension] = useState(''); 
 
     // Handle form submission
     const handleSubmit = async (e) => {
@@ -16,13 +16,12 @@ const PostForm = () => {
         // Append the text to form data
         formData.append('text', text);
 
-        // If the user provides a code snippet and selects an extension
         if(codeSnippet && file) 
         {
             alert('select only one method: file upload or code snippet upload with extension')
             return
         }
-        if (codeSnippet) {
+        if (codeSnippet.length>0) {
             if (!fileExtension) {
                 alert('Please select a file extension for the code snippet.');
                 return;
@@ -31,32 +30,31 @@ const PostForm = () => {
             const blob = new Blob([codeSnippet], { type: 'text/plain' });
             const newFile = new File([blob], `snippet${fileExtension}`, { type: 'text/plain' });
             formData.append('codeSnippet', newFile);
-        } else if (file) {
-            // If the user uploads a file directly
+        } 
+        else if (file) {
             formData.append('codeSnippet', file);
-        } else {
-            alert('Please provide a code snippet or upload a file.');
-            return;
         }
+        // else if(codeSnippet.length==0 && fileExtension) 
+        // {
+        //     alert("provide your")
+        // }
 
         try {
-            // Make a POST request to the backend
             const response = await axios.post('http://localhost:3001/post', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',  // Set the content type for file upload
                 },
-                withCredentials: true  // Include credentials if using session-based auth
+                withCredentials: true 
             });
 
-            // Alert or update the UI based on the response
             alert(response.data.msg);
-            setText('');  // Clear the text input
-            setFile(null);  // Clear the file input
-            setCodeSnippet(''); // Clear the code snippet input
-            setFileExtension(''); // Clear the file extension input
+            // clear all the variables
+            setText('');  
+            setFile(null);  
+            setCodeSnippet(''); 
+            setFileExtension(''); 
         } catch (error) {
             console.error('Error posting data:', error);
-            // alert('Error posting data');
         }
     };
 

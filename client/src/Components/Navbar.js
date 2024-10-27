@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { faStackOverflow } from '@fortawesome/free-brands-svg-icons';
 
 export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     const [notification, setNotification]=useState([]);
@@ -16,11 +17,11 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     const fetchNotificationCount = async () => {
         try {
             const response = await axios.get('http://localhost:3001/notification', {
-                withCredentials: true // Ensure cookies are included for session management
+                withCredentials: true 
             });
             // let count=response.length;
-            setNotification(response.data); // Update count from the response
-            // console.log(count);
+            setNotification(response.data); 
+            
         } catch (error) {
             console.error('Error fetching notification count:', error);
         }
@@ -28,11 +29,11 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
     useEffect(() => {
         if (isLoggedIn) {
-            fetchNotificationCount(); // Fetch immediately when the user is logged in
+            fetchNotificationCount(); 
 
             const interval = setInterval(() => {
-                fetchNotificationCount(); // Fetch notification count every 10 seconds
-            }, 10000); // 10,000 ms = 10 seconds
+                fetchNotificationCount(); 
+            }, 10000); 
             
             return () => clearInterval(interval); // Cleanup the interval on component unmount
         }
@@ -41,10 +42,15 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     const button={marginRight:'20px', fontSize:'1.2rem', fontWeight:'700', padding:'0.3rem 1.4rem'}
 
     return (
-            <AppBar sx={{ bgcolor: '#777' }}>
+            <AppBar sx={{ bgcolor: '#666' }}>
                 <Toolbar>
-                    <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-                        Basic Stack-Overflow
+                {/* <FontAwesomeIcon icon={faCode} style={{ marginRight: '8px', color: 'white' }} /> Example icon */}
+                
+                        {/* <FontAwesomeIcon icon="faStackOverflow" /> */}
+                        {/* <FontAwesomeIcon icon={faStackOverflow} /> */}
+                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+                        Basic Stack-Overflow &nbsp;
+                        <FontAwesomeIcon icon={faStackOverflow} />
                     </Typography>
                     {!isLoggedIn ? (
                         <>

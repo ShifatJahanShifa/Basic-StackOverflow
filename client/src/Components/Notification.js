@@ -15,15 +15,15 @@ function Notification() {
     const fetchNotifications = async () => {
         try {
             const response = await axios.get('http://localhost:3001/notification', {
-                withCredentials: true // Ensure cookies are included if you're using sessions
+                withCredentials: true 
             });
             setNotifications(response.data);
         } catch (error) {
-            
             if (error.response && error.response.status === 401) {
                 // Redirect to login page
                 window.location.href = '/login';
-            } else {
+            } 
+            else {
                 alert('Error fetching notifications');
             }
         }
@@ -35,7 +35,7 @@ function Notification() {
             .then(response => {
                 if (response.data.user) {
                     setUser(response.data.user);
-                    fetchNotifications(); // Fetch notifications after user is authenticated
+                    fetchNotifications(); 
                 } else {
                     navigate("/login");
                 }
@@ -44,13 +44,11 @@ function Notification() {
             .finally(() => setLoading(false));
     }, [user,navigate]);
 
-    // console.log("notif fetched");
     const handleNotificationClick = (notificationId) => {
         console.log(notificationId);
-        /// again
+        // expanding
         setClickedNotificationId(prevClickedNotificationId => [...prevClickedNotificationId, notificationId]);
 
-        // Navigate to the detail page for the clicked notification
         navigate(`/notification/${notificationId}`);
     };  
 
@@ -60,7 +58,6 @@ function Notification() {
 
     console.log(notifications.length)
     return (
-        
         <div>
             <h2>Your Notifications</h2>
             <div className="notif-container">

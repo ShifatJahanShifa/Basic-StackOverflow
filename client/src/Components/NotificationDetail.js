@@ -7,7 +7,7 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const NotificationDetail = () => {
     const { notificationId } = useParams(); // Get the notification ID from the URL
-    console.log(notificationId)
+    // console.log(notificationId)
     const [details, setDetails] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -15,12 +15,12 @@ const NotificationDetail = () => {
         const fetchDetails = async () => {
             try {
                 const response = await axios.get(`http://localhost:3001/notification/${notificationId}`, {
-                    withCredentials: true // Ensure cookies are included if you're using sessions
+                    withCredentials: true
                 });
                 setDetails(response.data);
             } catch (error) {
                 console.error('Error fetching notification details:', error);
-                alert('Error fetching notification details');
+                // alert('Error fetching notification details');
             } finally {
                 setLoading(false);
             }
@@ -40,29 +40,22 @@ const NotificationDetail = () => {
     return (
         <div className="detail-container">
             <h2>Notification Details</h2>
-            {/* <p>User ID: {details.notification.userId}</p>
-            <p>Notification Text: {details.notification.text}</p>
-            <p>User Email: {details.notification.userEmail}</p> */}
             <div className="detail-box">
-                {/* <p><span>User ID:</span> {details.notification.userId}</p> */}
                 <p><span>User Email:</span> {details.notification.userEmail}</p>
                 <p><span>Text:</span> {details.notification.text}</p>
             </div>
             
             <h2>code</h2>
             <div className="detail-box">
-                {/* <p><span>Post Text:</span> {details.post.text}</p> */}
                 {details.post.fileContent && (
                     <pre className="code-block">
-                        {/* <code className="code">{details.post.fileContent}</code>  */}
                         <SyntaxHighlighter language="javascript" style={docco} >
-                        {typeof details.post.fileContent === 'object' 
-                ? JSON.stringify(details.post.fileContent, null, 2) // Convert object to string
-                : String(details.post.fileContent)} {/* Display code content */}
-                    </SyntaxHighlighter>
+                            {typeof details.post.fileContent === 'object' 
+                            ? JSON.stringify(details.post.fileContent, null, 2) 
+                            : String(details.post.fileContent)} {/* Display code content */}
+                        </SyntaxHighlighter>
                     </pre>
                 )}
-                {/* <p><span>Post Created By:</span> {details.post.userId.email}</p>  */}
             </div>
         </div>
     );

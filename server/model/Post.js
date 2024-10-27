@@ -8,5 +8,3 @@ const postSchema = new mongoose.Schema({
 
 const post= mongoose.model('posts', postSchema);
 module.exports=post 
-
-// const mongoose = require('mongoose');

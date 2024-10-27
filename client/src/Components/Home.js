@@ -19,14 +19,13 @@ function Home() {
     // Function to fetch posts from the backend
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/post', 
+            const response = await axios.get('http://localhost:3001/post',
                 {
                     withCredentials: true // Ensure cookies are included if you're using sessions
                 });
             setPosts(response.data);
         } catch (error) {
             console.error('Error fetching posts:', error);
-            // alert('Error fetching posts');
         }
     };
 
@@ -55,26 +54,26 @@ function Home() {
     }
 
 
-// Rendering posts with content
-return (
-    <div className="container">
-        {posts.map(post => (
-            <div key={post._id} className="post">
-                <h3>{post.email}</h3>
-                <p>{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true})}</p>
-                <p className="text">{post.text}</p>
-                {post.fileContent && (
-                    <pre className="code-block">
-                        <SyntaxHighlighter language="javascript" style={docco} >
-                        {typeof post.fileContent === 'object' 
-                        ? JSON.stringify(post.fileContent, null, 2) // Convert object to string
-                        : String(post.fileContent)} {/* Display code content */}
-                    </SyntaxHighlighter>
-                    </pre>
-                )}
-            </div>
-        ))}
-    </div>
+    // Rendering posts with content
+    return (
+        <div className="container">
+            {posts.map(post => (
+                <div key={post._id} className="post">
+                    <h3>{post.email}</h3>
+                    <p>{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
+                    <p className="text">{post.text}</p>
+                    {post.fileContent && (
+                        <pre className="code-block">
+                            <SyntaxHighlighter language="javascript" style={docco} >
+                                {typeof post.fileContent === 'object'
+                                    ? JSON.stringify(post.fileContent, null, 2) // Convert object to string
+                                    : String(post.fileContent)} 
+                            </SyntaxHighlighter>
+                        </pre>
+                    )}
+                </div>
+            ))}
+        </div>
     );
 }
 

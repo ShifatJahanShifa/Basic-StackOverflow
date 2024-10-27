@@ -31,7 +31,7 @@ const { streamToString }=require('../helper/helper')
 
 const getPosts= async(req,res)=>{
     try {
-        const userId = req.session.user.id;  // Get the logged-in user's ID
+        const userId = req.session.user.id;  // Get the logged-in user's ID, document id
         const posts = await post.find({ userId: { $ne: userId } }).sort({createdAt: -1})
             .populate('userId', 'email') // Populate userId with the email field
             .exec();
@@ -65,8 +65,8 @@ const getPosts= async(req,res)=>{
 }
 
 const createPost= async(req,res)=>{
-    const { text } = req.body;  // Get the text from the request body
-    const userId = req.session.user.id;  // Get the logged-in user's ID from the session
+    const { text } = req.body;  
+    const userId = req.session.user.id;  
 
     try {
         let snippetUrl = null;
@@ -74,7 +74,7 @@ const createPost= async(req,res)=>{
         if (req.file) {
             const fileName = `${Date.now()}-${req.file.originalname}`;
             await minioClient.putObject('codes', fileName, req.file.buffer);
-            snippetUrl = fileName; // Store the file name for accessing it later
+            snippetUrl = fileName; 
         }
 
         // Create a new post
