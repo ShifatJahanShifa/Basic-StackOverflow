@@ -44,6 +44,11 @@ function Notification() {
             .finally(() => setLoading(false));
     }, [user,navigate]);
 
+    useEffect(() => {
+        fetchNotifications();
+    }, [navigate]);
+
+    
     const handleNotificationClick = (notificationId) => {
         console.log(notificationId);
         // expanding

@@ -101,7 +101,10 @@ app.post("/logout", (req, res) => {
                 res.status(500).json({ error: "Failed to logout" });
             } else {
                 res.clearCookie('connect.sid'); // Clears the session cookie
-                res.status(200).json("Logout successful");
+                // res.status(200).json("Logout successful");
+                setTimeout(() => {
+                    res.status(200).json("Logout successful");
+                }, 100);
             }
         });
     } else {
