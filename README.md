@@ -8,7 +8,7 @@ A minimalistic version of popular website stackoverflow.
 
 I have been developing this project under the course "Distributed System (CSE-601)". The requirement 
 
-- At first I have to develop this project following monoloitic architecture.
+- At first I have to develop this project following monolithic architecture.
 
 ## Features
 
