@@ -19,7 +19,7 @@ function Home() {
     // Function to fetch posts from the backend
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/post',
+            const response = await axios.get('http://localhost:80/post',
                 {
                     withCredentials: true // Ensure cookies are included if you're using sessions
                 });
@@ -32,7 +32,7 @@ function Home() {
     // Check for user session or redirect to login
     useEffect(() => {
         if (!user) {
-            axios.get('http://localhost:3001/user', { withCredentials: true })
+            axios.get('http://localhost:80/auth/user', { withCredentials: true })
                 .then(response => {
                     if (response.data.user) {
                         setUser(response.data.user);

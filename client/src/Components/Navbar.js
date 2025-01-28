@@ -16,7 +16,7 @@ export const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
     const fetchNotificationCount = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/notification', {
+            const response = await axios.get('http://localhost:80/notification', {
                 withCredentials: true 
             });
             // let count=response.length;

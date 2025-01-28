@@ -1,0 +1,191 @@
+version: "3.8"
+services:
+    # nodeserver:
+    #     restart: always
+    #     depends_on:
+    #         - mongodb
+    #         - minio
+    #     build:
+    #         context: ./server
+    #     ports:
+    #         - "3001:3001"
+    #     environment:
+    #         - MONGO_URL=mongodb://mongodb:27017/stack 
+    #         - MINIO_ENDPOINT=http://minio
+    #         - MINIO_PORT=9000
+    #         - MINIO_ACCESS_KEY=minioadmin
+    #         - MINIO_SECRET_KEY=minioadmin
+        # networks:
+        #     - app-network
+        
+    # nginx:
+    #     restart: always
+    #     build:
+    #         context: ./nginx
+    #     ports:
+    #         - "80:80"   
+
+    
+    # uncomment up ------------------------------------------------------------
+
+    # mongo: 
+    #     build:
+    #         context: ./db
+    #     ports:
+    #         - "27017:27017"  
+
+
+    # mongodb:
+    #     image: mongo:latest 
+    #     environment:
+    #         - MONGODB_INITDB_ROOT_USERNAME=user 
+    #         - MONGODB_INITDB_ROOT_PASSWORD=pass 
+    #     ports:
+    #         - 27017:27017
+    #     volumes:
+    #         - mongo-data:/data/db 
+        # networks:
+        #     - app-network
+
+
+    # separate_mongo: 
+
+    mongodb_user:
+        image: mongo:latest
+        ports:
+            - 27018:27017
+        volumes:
+            - mongo_user_data:/data/db
+
+    mongodb_post:
+        image: mongo:latest
+        ports:
+            - 27019:27017
+        volumes:
+            - mongo_post_data:/data/db
+    
+    mongodb_notification:
+        image: mongo:latest
+        ports:
+            - 27020:27017
+        volumes:
+            - mongo_notification_data:/data/db
+
+    minio:
+        image: minio/minio:latest
+        ports:
+        - '9000:9000'
+        - '9001:9001'
+        # networks:
+        # - app-network
+        volumes:
+        - 'minio_data:/data'
+        environment:
+        - MINIO_ROOT_USER=minioadmin
+        - MINIO_ROOT_PASSWORD=minioadmin
+        - MINIO_DEFAULT_BUCKETS="mybucket" 
+        - MINIO_ACCESS_KEY=minioadmin  #AKIAIOSFODNN7EXAMPLE
+        - MINIO_SECRET_KEY=minioadmin      #wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+     
+        # env_file:
+        #     - minio.env 
+        command: minio server /data
+
+    # createbuckets:
+    #     image: minio/mc
+    #     depends_on:
+    #         - minio
+    #     entrypoint: >
+    #         /bin/sh -c "
+    #         /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+    #         /usr/bin/mc rm -r --force myminio/codes;
+    #         /usr/bin/mc mb myminio/codes;
+    #         /usr/bin/mc policy download myminio/codes;
+    #         exit 0;
+    #         "
+    createbuckets:
+        image: minio/mc
+        depends_on:
+            - minio
+        entrypoint: >
+            /bin/sh -c "
+            /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
+            if ! /usr/bin/mc ls myminio/codes; then
+                /usr/bin/mc mb myminio/codes;
+                /usr/bin/mc policy download myminio/codes;
+            fi;
+            exit 0;
+            ".
+
+
+    # per services
+    user-service:
+        build:
+            context: ./User_Service  # Updated build context path
+        # command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+        # networks:
+        #   - mynetwork
+        ports:
+            - "4003:4003"
+        depends_on:
+            - mongodb_user
+        environment:
+            - MONGO_URL=mongodb://mongodb_user:27017/auth
+
+    post-service:
+        build:
+            context: ./Post_Service  # Updated build context path
+            # command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+            # networks:
+            # - mynetwork
+        ports:
+            - "4002:4002"
+        depends_on:
+            - mongodb_post
+            - minio
+            - user-service 
+            - notification-service
+        environment:
+            - MONGO_URL=mongodb://mongodb_post:27017/post
+    
+    notification-service:
+        build:
+            context: ./Notification_Service  # Updated build context path
+            # command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+            # networks:
+            # - mynetwork
+        ports:
+            - "4001:4001"
+        depends_on:
+            - mongodb_notification
+            - minio
+            - user-service 
+            # - post-service
+        environment:
+            - MONGO_URL=mongodb://mongodb_notification:27017/notification
+            
+
+
+    # tried 
+    nginx:
+        restart: always
+        build:
+            context: ./nginx
+        ports:
+            - "80:80"   
+        depends_on:
+        - user-service
+        - post-service
+        - notification-service
+        
+# networks:
+#     app-network:
+#         driver: bridge
+
+volumes:
+    # mongo-data:  
+    mongo_user_data:
+    mongo_post_data:
+    mongo_notification_data:
+    minio_data:
+        # driver: local

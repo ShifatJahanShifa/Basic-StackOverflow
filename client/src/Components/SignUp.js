@@ -11,7 +11,7 @@ function SignUp(){
 
     const handleSignup = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/signup", { email, password })
+        axios.post("http://localhost:80/auth/signup", { email, password })
             .then(result => {
                 console.log(result.status);
                 if (result.status === 201) {

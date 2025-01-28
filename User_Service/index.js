@@ -6,14 +6,12 @@ const dotenv = require("dotenv");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const UserModel = require("./model/User");
-const post=require('./model/Post');
-const notification=require('./model/Notification')
 const Minio=require('minio')
 const multer = require('multer');
 const router = express.Router();
 const axios= require('axios');
 const upload = multer({ storage: multer.memoryStorage() });
-const route=require('./routes/route')
+
 
 dotenv.config();
 const app = express();
@@ -21,9 +19,12 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:3000', // Replace with your frontend's URL
+    origin: ['http://localhost:3000','http://localhost:80',
+        'http://post-service:4002','http://notification-service:4001'
+    ], // Replace with your frontend's URL
     credentials: true
 }));
+
 
 // db connection
 mongoose.connect(process.env.MONGO_URL)
@@ -35,18 +36,9 @@ mongoose.connect(process.env.MONGO_URL)
             
             console.log('Connected to MongoDB')
         })
-    .catch(err => console.error('Failed to connect to MongoDB', err));
-   
-// MinIO setup
-// const minioClient = new Minio.Client({
-//     endPoint: 'localhost',
-//     port: 9000,
-//     useSSL: false,
-//     accessKey: 'admin',
-//     secretKey: 'password'
-// });
+    .catch(err => console.error('Failed to connect to MongoDB', err)); 
 
-// session setup
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,     // no update
@@ -57,12 +49,8 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
 }));
 
-app.get('/',async(req,res)=>{
-    res.status(200).json(
-        "success"
-    )
-})
-app.post("/signup", async (req, res) => {
+
+app.post("/auth/signup", async (req, res) => {
     try {
         const { email, password } = req.body;
         const existingUser = await UserModel.findOne({ email });
@@ -78,7 +66,7 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/auth/login", async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await UserModel.findOne({ email });
@@ -98,7 +86,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/auth/logout", (req, res) => {
     if (req.session) {
         req.session.destroy(err => {
             if (err) {
@@ -116,12 +104,46 @@ app.post("/logout", (req, res) => {
     }
 });
 
-app.get('/user', (req, res) => {
+app.get('/auth/user', (req, res) => {
+    // console.log('got called User:', req.session.user);
     if (req.session.user) {
+        // console.log('got called User:', req.session.user);
         res.json({ user: req.session.user });
     } else {
+        // console.log('got called User:', req.session.user);
         res.status(401).json("Not authenticated");
     }
 });
 
-app.use('/',route)
+
+// new api endpoint
+app.get('/auth/users/exclude/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const users = await UserModel.find({ _id: { $ne: userId } }).select('_id');
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Error fetching users' });
+    }
+});
+
+app.get('/auth/users/:userId', async(req,res)=>{
+    const { userId } = req.params;
+    try{
+        const user = await UserModel.findById(userId).lean(); // Query the database for the user
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' }); // Handle case where user doesn't exist
+        }
+        res.status(200).json({
+            id: user._id, // Return only necessary fields
+            email: user.email,
+        });
+    }
+    catch(error)
+    {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Error fetching user\'s details' });
+    }
+})

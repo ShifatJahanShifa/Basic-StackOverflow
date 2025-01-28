@@ -14,7 +14,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-      axios.get('http://localhost:3001/user', { withCredentials: true })
+      axios.get('http://localhost:80/auth/user', { withCredentials: true })
           .then(response => {
               if (response.data.user) {
                   setIsLoggedIn(true);
@@ -30,10 +30,11 @@ function App() {
           <BrowserRouter>
               <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
               <Routes>
+                  {/* <Route path="/" element={<View />}></Route> */}
                   <Route path="/home" element={<Home />} />
                   <Route path="/post" element={<PostForm />} />
                   <Route path="/notification" element={<Notification />} />
-                  <Route path="/notification/:notificationId" element={<NotificationDetail />} />
+                  <Route path="/notification/:postId" element={<NotificationDetail />} />
                   <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login setIsLoggedIn={setIsLoggedIn} />} />
                   <Route path="/signup" element={isLoggedIn ? <Navigate to="/home" /> : <SignUp setIsLoggedIn={setIsLoggedIn} />} />
               </Routes>

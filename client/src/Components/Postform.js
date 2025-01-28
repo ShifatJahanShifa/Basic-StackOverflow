@@ -40,7 +40,7 @@ const PostForm = () => {
         // }
 
         try {
-            const response = await axios.post('http://localhost:3001/post', formData, {
+            const response = await axios.post('http://localhost:80/post', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',  // Set the content type for file upload
                 },
