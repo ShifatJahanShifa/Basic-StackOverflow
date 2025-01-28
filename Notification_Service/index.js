@@ -24,6 +24,7 @@ app.use(cors({
     origin: ['http://localhost:3000','http://localhost:80',
         'http://post-service:4002','http://notification-service:4001'
     ], // Replace with your frontend's URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true
 }));
 

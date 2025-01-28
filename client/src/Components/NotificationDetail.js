@@ -29,20 +29,20 @@ const NotificationDetail = () => {
                 setDetails(response.data);
                 console.log("here",response.data);
 
-                try {
-                    await axios.get(`http://localhost:80/notification/${notificationId}`,
-                    {
-                        withCredentials: true
-                    });
-                    console.log("Notification updated:");
-                } catch (error) {
-                    console.error('Error updating notification details:', error);
-                }
             } catch (error) {
                 console.error('Error fetching notification details:', error);
                 // alert('Error fetching notification details');
             } finally {
                 setLoading(false);
+            }
+            try {
+                await axios.get(`http://localhost:80/notification/${notificationId}`,
+                {
+                    withCredentials: true
+                });
+                console.log("Notification updated:");
+            } catch (error) {
+                console.error('Error updating notification details:', error);
             }
         };
 
