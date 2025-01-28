@@ -7,6 +7,8 @@ const Minio=require('minio')
 const axios = require('axios')
 // const minioClient=require('../config/minioConfig').default
 const { streamToString }=require('../helper/helper')
+const { v4: uuidv4 } = require('uuid')
+
 
 
 const minioClient = new Minio.Client({
@@ -155,7 +157,7 @@ const createPost = async (req, res) => {
 
         // Handle file upload to MinIO
         if (req.file) {
-            const fileName = `${Date.now()}-${req.file.originalname}`; // Generate a unique filename
+            const fileName = `${uuidv4()}-${req.file.originalname}`; // Generate a unique filename
             await minioClient.putObject('codes', fileName, req.file.buffer); // Upload file to MinIO
             snippetUrl = fileName; // Save the file name for the database
         }

@@ -89,7 +89,7 @@ services:
      
         # env_file:
         #     - minio.env 
-        command: minio server /data
+        command: minio server /data --console-address ":9001"
 
     # createbuckets:
     #     image: minio/mc
