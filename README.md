@@ -73,4 +73,60 @@ Backend:
   node index.js
 ```
 
+## Distributed Basic-StackOverFlow
+Alhamdulillah I have successfully converted the Monolithic Basic-Stackoverflow to Distributed Basic-Stakoverflow. According to the requirement: 
+
+```bash
+- Nginx server is used as reverse proxy server
+- Server side code is divided into three services- user service, post service, notification service
+- Inter service communication is established
+- The three service have three different database associated with them
+- Three services, three associated databases, minio all are orchestrated in docker-compose.yml file
+- Additionaly, i have containerized frontend separately but have not orchestrated.
+``` 
+
+## Run
+ 
+## Run Locally
+
+### Clone the project
+
+```bash
+  git clone https://github.com/ShifatJahanShifa/Basic-StackOverflow.git
+```
+
+### Go to the project directory
+
+```bash
+  cd Basic-StackOverflow
+```
+
+### Install dependencies
+
+Frontend: 
+
+```bash 
+  cd client
+  npm install
+``` 
+Backend:
+
+```   
+Must have docker installed
+```
+
+### Run the project
+
+Frontend:
+
+```bash
+  cd client
+  npm start
+```
+Backend:
+
+```bash
+  docker-compose build
+  docker-compose up
+```
 

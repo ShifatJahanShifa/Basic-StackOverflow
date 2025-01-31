@@ -21,7 +21,7 @@ function Home() {
         try {
             const response = await axios.get('http://localhost:80/post',
                 {
-                    withCredentials: true // Ensure cookies are included if you're using sessions
+                    withCredentials: true 
                 });
             setPosts(response.data);
         } catch (error) {
@@ -36,7 +36,7 @@ function Home() {
                 .then(response => {
                     if (response.data.user) {
                         setUser(response.data.user);
-                        fetchPosts(); // Fetch posts after user is authenticated
+                        fetchPosts(); 
                     } else {
                         navigate("/login");
                     }
@@ -45,7 +45,7 @@ function Home() {
                 .finally(() => setLoading(false));
         } else {
             setLoading(false);
-            fetchPosts(); // Fetch posts if user is already set
+            fetchPosts(); 
         }
     }, [user, navigate]);
 
@@ -54,7 +54,6 @@ function Home() {
     }
 
 
-    // Rendering posts with content
     return (
         <div className="container">
             {posts.map(post => (

@@ -8,7 +8,6 @@ const PostForm = () => {
     const [codeSnippet, setCodeSnippet] = useState(''); 
     const [fileExtension, setFileExtension] = useState(''); 
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         let formData = new FormData();
@@ -42,7 +41,7 @@ const PostForm = () => {
         try {
             const response = await axios.post('http://localhost:80/post', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',  // Set the content type for file upload
+                    'Content-Type': 'multipart/form-data',  
                 },
                 withCredentials: true 
             });

@@ -24,7 +24,7 @@ app.use(cors({
     origin: ['http://localhost:3000','http://localhost:80',
         'http://user-service:4003','http://notification-service:4001',
         'http://localhost:3000/'
-    ], // Replace with your frontend's URL
+    ], 
     credentials: true
 }));
 app.options('*', cors());
@@ -42,15 +42,5 @@ mongoose.connect(process.env.MONGO_URL)
         })
     .catch(err => console.error('Failed to connect to MongoDB', err)); 
 
-
-    // app.use(session({
-    //     secret: process.env.SESSION_SECRET,
-    //     resave: false,     // no update
-    //     saveUninitialized: true,    // store when created
-    //     store: MongoStore.create({
-    //         mongoUrl: process.env.MONGO_URL
-    //     }),
-    //     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
-    // })); 
 
     app.use('/',route)
